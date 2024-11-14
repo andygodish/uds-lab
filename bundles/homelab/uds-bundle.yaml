@@ -22,7 +22,7 @@ packages:
     ref: v0.42.1
   - name: core-base
     path: ../../build/
-    ref: "0.30.0"
+    ref: "0.31.1"
     overrides:
       istio-admin-gateway:
         uds-istio-config:
