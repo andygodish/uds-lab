@@ -1,52 +1,60 @@
 {
-    "enabled": true,
-    "forkProcessing": "enabled",
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-      ":dependencyDashboard",
-      "config:base",
-      "helpers:pinGitHubActionDigests",
-      ":semanticCommits",
-      ":semanticCommitTypeAll(chore)"
-    ],
-    "branchConcurrentLimit": 0,
-    "prConcurrentLimit": 0,
-    "prHourlyLimit": 0,
-    "dependencyDashboardApproval": false,
-    "schedule": ["after 7am and before 9am every weekday"],
-    "separateMajorMinor": false,
-    "regexManagers": [
-      {
-        "fileMatch": [".*(\\.ya?ml|\\.json)$"],
-        "matchStrings": [
-          "https:\\/\\/raw\\.githubusercontent\\.com\\/(?<depName>[^\\/]+\\/[^\\/]+)\\/(?<currentValue>[^\\/]+)"
-        ],
-        "versioningTemplate": "semver-coerced",
-        "datasourceTemplate": "github-tags"
-      },
-      {
-        "fileMatch": ["(^|/)uds-bundle.yaml$"],
-        "matchStrings": [
-          "(?m)name: core-base\\s+path: [\"']?.*[\"']?\\s+ref: [\"']?(?<currentValue>\\d+\\.\\d+\\.\\d+)[\"']?"
-        ],
-        "datasourceTemplate": "github-tags",
-        "depNameTemplate": "defenseunicorns/uds-core",
-        "versioningTemplate": "semver"
-      }
-    ],
-    "packageRules": [
-      {
-        "groupName": "UDS Common Support Dependencies",
-        "labels": ["support-deps"],
-        "commitMessageTopic": "support-deps",
-        "packagePatterns": ["*"]
-      },
-      {
-        "groupName": "UDS Common Package Dependencies",
-        "labels": ["package-deps"],
-        "commitMessageTopic": "package-deps",
-        "matchPackagePatterns": [".*nginx.*"]
-      }
-    ]
-  }
-  
+  "enabled": true,
+  "forkProcessing": "enabled",
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    ":dependencyDashboard",
+    "config:base",
+    "helpers:pinGitHubActionDigests",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "branchConcurrentLimit": 0,
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0,
+  "dependencyDashboardApproval": false,
+  "schedule": ["after 7am and before 9am every weekday"],
+  "separateMajorMinor": false,
+  "regexManagers": [
+    {
+      "fileMatch": [".*(\\.ya?ml|\\.json)$"],
+      "matchStrings": [
+        "https:\\/\\/raw\\.githubusercontent\\.com\\/(?<depName>[^\\/]+\\/[^\\/]+)\\/(?<currentValue>[^\\/]+)"
+      ],
+      "versioningTemplate": "semver-coerced",
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "fileMatch": ["(^|/)uds-bundle.yaml$"],
+      "matchStrings": [
+        "(?m)name: core-base\\s+path: [\"']?.*[\"']?\\s+ref: [\"']?(?<currentValue>\\d+\\.\\d+\\.\\d+)[\"']?"
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "defenseunicorns/uds-core",
+      "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": [".*\\.ya?ml$"],
+      "matchStringsStrategy": "recursive",
+      "matchStrings": [
+        "(?m)name: (?<packageName>[\\w-]+)\\s+# renovate: image=(?<depName>[^\\s]+)\\s+repository: [^\\s]+\\s+ref: [\"']?(?<currentValue>[\\d\\.]+(-[\\w]+)?)[\"']?"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<compatibility>\\w+))?$"
+    }
+  ],
+  "packageRules": [
+    {
+      "groupName": "UDS Common Support Dependencies",
+      "labels": ["support-deps"],
+      "commitMessageTopic": "support-deps",
+      "packagePatterns": ["*"]
+    },
+    {
+      "groupName": "UDS Common Package Dependencies",
+      "labels": ["package-deps"],
+      "commitMessageTopic": "package-deps",
+      "matchPackagePatterns": [".*nginx.*"]
+    }
+  ]
+}

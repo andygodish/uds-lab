@@ -21,8 +21,9 @@ packages:
     repository: ghcr.io/zarf-dev/packages/init
     ref: v0.42.1
   - name: core-base
-    path: ../../build/
-    ref: "0.31.1"
+    # renovate: image=ghcr.io/defenseunicorns/packages/uds/core-base
+    repository: ghcr.io/defenseunicorns/packages/uds/core-base
+    ref: "0.31.0-upstream" 
     overrides:
       istio-admin-gateway:
         uds-istio-config:
