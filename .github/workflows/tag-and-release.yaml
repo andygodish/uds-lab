@@ -30,11 +30,11 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Setup UDS
         if: always()
-        uses: defenseunicorns/uds-common/.github/actions/setup@e3008473beab00b12a94f9fcc7340124338d5c08 # v0.13.1
+        uses: defenseunicorns/uds-common/.github/actions/setup@d59b1c601730bfa7ab76439643242358e529603e # v1.2.2
 
       - name: Login to GHCR
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
