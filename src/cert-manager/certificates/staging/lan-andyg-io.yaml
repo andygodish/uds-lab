@@ -1,0 +1,16 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: lan-andyg-io-staging
+  namespace: default
+spec:
+  secretName: lan-andyg-io-staging-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: "*.lan.andyg.io"
+  dnsNames:
+  - "lan.andyg.io"
+  - "*.lan.andyg.io"
+  - "*.admin.lan.andyg.io"

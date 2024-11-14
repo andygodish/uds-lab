@@ -1,0 +1,17 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: my-postgres-db
+spec:
+  teamId: "myteam"
+  numberOfInstances: 2
+  databases:
+    myapp: myuser
+  users:
+    myuser:  # database owner
+      - superuser
+      - createdb
+  volume:
+    size: 1Gi
+  postgresql:
+    version: "14"

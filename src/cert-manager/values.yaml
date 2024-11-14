@@ -1,0 +1,12 @@
+crds:
+  enabled: true
+replicaCount: 2
+extraArgs:
+  - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
+  - --dns01-recursive-nameservers-only
+podDnsPolicy: None    # Pods will not inherit DNS from local machine, cloudflare nameservers are configured below instead
+podDnsConfig:
+  nameservers:
+    - 1.1.1.1
+    - 9.9.9.9
+

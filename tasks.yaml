@@ -1,0 +1,64 @@
+includes:
+  - cleanup: ./tasks/cleanup.yaml
+  - dependencies: ./tasks/dependencies.yaml
+  - test: ./tasks/test.yaml
+  - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.8.0/tasks/create.yaml
+  - lint: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.8.0/tasks/lint.yaml
+  - pull: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.8.0/tasks/pull.yaml
+  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.8.0/tasks/deploy.yaml
+  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/refs/tags/v1.2.2/tasks/setup.yaml
+  - user: ./tasks/user.yaml
+tasks: 
+  - name: default
+    description: Creates local init bundle + dev-tools + zarf init + prometheus
+    actions: 
+      - task: create-init-bundle
+      - task: deploy:test-bundle
+        with:
+          path: bundles/init/dev-cluster
+
+  - name: create-init-bundle
+    description: Creates the local init bundle
+    actions:
+      - task: create:test-bundle
+        with: 
+          architecture: amd64
+          path: bundles/init/external-cluster/core
+  
+  # UDS Core Packages
+  - name: clone-core
+    description: "Clone uds-core into tmp dir for custom slim dev setup"
+    actions:
+      - cmd: rm -rf src/uds-core && git clone --depth=1 https://github.com/defenseunicorns/uds-core.git src/uds-core
+        description: clone UDS Core
+      - cmd: cd src/uds-core && uds run -f tasks/create.yaml pepr-build
+  
+  # UDS_ARCHITECTURE=amd64 prefix was needed to create that architecture on arm64
+  # ex: UDS_ARCHITECTURE=amd64 uds run core-slim-dev
+  - name: base
+    actions:
+    - task: create:package
+      with:
+        options: "--skip-sbom"
+        path: src/uds-core/packages/base
+
+  - name: identity-authorization
+    actions:
+    - task: create:package
+      with:
+        options: "--skip-sbom"
+        path: src/uds-core/packages/identity-authorization
+
+  - name: monitoring
+    actions:
+    - task: create:package
+      with:
+        options: "--skip-sbom"
+        path: src/uds-core/packages/monitoring
+
+  - name: loki-amd64
+    description: "Create and deploy loki from latest version of uds-core"
+    actions:
+      - cmd: uds zarf package create src/uds-core/src/loki -a amd64 --confirm --flavor upstream
+      - cmd: uds zarf package deploy build/zarf-package-uds-core-loki-amd64.tar.zst --confirm
+  

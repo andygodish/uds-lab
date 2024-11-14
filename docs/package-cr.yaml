@@ -1,0 +1,76 @@
+apiVersion: uds.dev/v1alpha1
+kind: Package
+metadata:
+  name: example-package
+  namespace: example-namespace
+spec:
+  network:
+    allow:
+      - direction: Ingress  # Required: Can be "Ingress" or "Egress"
+        labels:  # Optional: Labels to apply to the policy
+          key1: value1
+          key2: value2
+        description: "Allow incoming traffic from monitoring namespace"  # Optional: Description of the policy
+        selector:  # Optional: Labels to match pods in the namespace to apply the policy to
+          app: myapp
+          tier: frontend
+        remoteNamespace: monitoring  # Optional: The remote namespace to allow traffic to/from
+        remoteSelector:  # Optional: The remote pod selector labels to allow traffic to/from
+          app: prometheus
+        remoteGenerated: KubeAPI  # Optional: Custom generated remote selector for the policy
+        remoteCidr: 10.0.0.0/24  # Optional: Custom generated policy CIDR
+        port: 8080  # Optional: The port to allow (protocol is always TCP)
+        ports:  # Optional: A list of ports to allow (protocol is always TCP)
+          - 8080
+          - 9090
+
+      - direction: Egress
+        description: "Allow outgoing traffic to external API"
+        selector:
+          app: backend
+        remoteGenerated: Anywhere
+        port: 443
+
+      - direction: Ingress
+        description: "Allow incoming traffic from any pod in the same namespace"
+        selector:
+          app: database
+        remoteGenerated: IntraNamespace
+        port: 5432
+
+      - direction: Egress
+        description: "Allow outgoing traffic to cloud metadata service"
+        selector:
+          app: cloudapp
+        remoteGenerated: CloudMetadata
+        port: 80
+
+      - direction: Ingress
+        description: "Allow incoming traffic on multiple ports"
+        selector:
+          app: multiport
+        remoteNamespace: "*"  # Allow from any namespace
+        ports:
+          - 80
+          - 443
+          - 8080
+
+      - direction: Egress
+        description: "Allow outgoing traffic to specific CIDR"
+        selector:
+          app: external-com
+        remoteCidr: 203.0.113.0/24
+        port: 443
+
+      # Example showing use of labels without selector
+      - direction: Ingress
+        labels:
+          policy-type: custom
+        description: "Custom labeled policy"
+        remoteNamespace: special-ns
+        port: 9000
+
+      # Example with minimal configuration
+      - direction: Egress
+        description: "Minimal egress rule"
+        remoteGenerated: Anywhere

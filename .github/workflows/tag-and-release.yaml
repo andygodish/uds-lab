@@ -1,0 +1,49 @@
+name: Publish UDS Capability
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag-new-version:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release-flag.outputs.release_created }}
+    steps:
+      - name: Create Release Tag
+        id: tag
+        uses: googleapis/release-please-action@7987652d64b4581673a76e33ad5e98e3dd56832f # v4.1.3
+        with:
+          command: manifest-file # use configs in release-please-config.json
+      - id: release-flag
+        run: echo "release_created=${{ steps.tag.outputs.release_created || false }}" >> $GITHUB_OUTPUT
+
+  publish-uds-package:
+    needs: tag-new-version
+    if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - name: Setup UDS
+        if: always()
+        uses: defenseunicorns/uds-common/.github/actions/setup@e3008473beab00b12a94f9fcc7340124338d5c08 # v0.13.1
+
+      - name: Login to GHCR
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Publish the capability
+        run: |
+          uds zarf package create --confirm -a arm64 -o oci://ghcr.io/andygodish/packages
+          uds zarf package create --confirm -a amd64 -o oci://ghcr.io/andygodish/packages
