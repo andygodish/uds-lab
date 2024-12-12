@@ -6,7 +6,7 @@ includes:
   - lint: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.5.1/tasks/lint.yaml
   - pull: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.5.1/tasks/pull.yaml
   - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.5.1/tasks/deploy.yaml
-  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/refs/tags/v1.2.2/tasks/setup.yaml
+  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/refs/tags/v1.5.1/tasks/setup.yaml
   - user: ./tasks/user.yaml
 tasks: 
   - name: default
