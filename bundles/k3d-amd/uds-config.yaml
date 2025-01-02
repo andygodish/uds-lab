@@ -1,0 +1,3 @@
+shared:
+  # shared across all packages in a bundle
+  cluster_name: uds-amd
