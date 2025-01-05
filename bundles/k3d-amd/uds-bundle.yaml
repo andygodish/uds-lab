@@ -7,4 +7,19 @@ packages:
   - name: uds-k3d
     repository: oci://defenseunicorns/uds-k3d
     ref: 0.11.0
-    
+    overrides: 
+      uds-dev-stack:
+        minio:
+          variables:
+            - name: BUCKETS
+              description: "Set Minio Buckets"
+              path: buckets
+            - name: SVCACCTS
+              description: "Minio Service Accounts"
+              path: svcaccts
+            - name: USERS
+              description: "Minio Users"
+              path: users
+            - name: POLICIES
+              description: "Minio policies"
+              path: policies 
