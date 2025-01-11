@@ -1,7 +1,7 @@
 kind: UDSBundle
 metadata:
-  name: k3d-amd
-  description: For a persistant k3d cluster running on amd64 infrastructure
+  name: k3d
+  description: For a persistant k3d cluster. Just the cluster.
   version: 0.1.0
 packages:
   - name: uds-k3d
