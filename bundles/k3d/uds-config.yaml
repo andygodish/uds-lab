@@ -1,3 +1,4 @@
 shared:
   # shared across all packages in a bundle
   k3d_image: rancher/k3s:v1.32.0-k3s1
+

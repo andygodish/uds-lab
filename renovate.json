@@ -25,31 +25,21 @@
       "datasourceTemplate": "github-tags"
     },
     {
-      "fileMatch": ["(^|/)uds-bundle.yaml$"],
-      "matchStrings": [
-        "(?m)name: core-base\\s+path: [\"']?.*[\"']?\\s+ref: [\"']?(?<currentValue>\\d+\\.\\d+\\.\\d+)[\"']?"
-      ],
-      "datasourceTemplate": "github-tags",
-      "depNameTemplate": "defenseunicorns/uds-core",
-      "versioningTemplate": "semver"
-    },
-    {
-      "fileMatch": [".*\\.ya?ml$"],
-      "matchStringsStrategy": "recursive",
-      "matchStrings": [
-        "(?m)name: (?<packageName>[\\w-]+)\\s+# renovate: image=(?<depName>[^\\s]+)\\s+repository: [^\\s]+\\s+ref: [\"']?(?<currentValue>[\\d\\.]+(-[\\w]+)?)[\"']?"
-      ],
-      "datasourceTemplate": "docker",
-      "registryUrlTemplate": "https://ghcr.io",
-      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<compatibility>\\w+))?$"
-    },
-    {
       "fileMatch": [".*\\.ya?ml$"],
       "matchStrings": [
         "k3d_image: rancher/k3s:(?<currentValue>.*)"
       ],
       "depNameTemplate": "rancher/k3s",
       "datasourceTemplate": "docker"
+    },
+    {
+      "fileMatch": [".*\\.ya?ml$"],
+      "matchStrings": [
+        "name: init\\s+repository: ghcr.io/zarf-dev/packages/init\\s+ref: (?<currentValue>v\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "ghcr.io/zarf-dev/packages/init",
+      "registryUrlTemplate": "https://ghcr.io"
     }
   ],
   "packageRules": [
