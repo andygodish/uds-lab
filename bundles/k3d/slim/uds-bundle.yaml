@@ -1,0 +1,13 @@
+kind: UDSBundle
+metadata:
+  name: slim
+  description: Building uds core base package for development
+  version: 0.1.0
+packages:
+  - name: init
+    repository: ghcr.io/zarf-dev/packages/init
+    ref: v0.45.0
+  - name: core-base
+    # renovate: image=ghcr.io/defenseunicorns/packages/uds/core-base
+    repository: ghcr.io/defenseunicorns/packages/uds/core-base
+    ref: "0.33.0-upstream"
