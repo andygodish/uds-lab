@@ -1,4 +1,3 @@
 shared:
   # shared across all packages in a bundle
-  cluster_name: uds-amd
   k3d_image: rancher/k3s:v1.31.4-k3s1

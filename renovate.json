@@ -42,6 +42,14 @@
       "datasourceTemplate": "docker",
       "registryUrlTemplate": "https://ghcr.io",
       "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<compatibility>\\w+))?$"
+    },
+    {
+      "fileMatch": [".*\\.ya?ml$"],
+      "matchStrings": [
+        "k3d_image: rancher/k3s:(?<currentValue>.*)"
+      ],
+      "depNameTemplate": "rancher/k3s",
+      "datasourceTemplate": "docker"
     }
   ],
   "packageRules": [
